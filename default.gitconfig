@@ -1,0 +1,18 @@
+[user]
+	name = Thomas Lovett
+	email = tklovett@gmail.com
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	ui = true
+[push]
+	default = tracking
+[branch]
+	autosetuprebase = always
+[credential]
+	helper = osxkeychain
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true

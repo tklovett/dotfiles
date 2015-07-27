@@ -1,0 +1,14 @@
+"*":
+  editor:
+    invisibles: {}
+    softTabs: false
+    showInvisibles: true
+  core:
+    themes: [
+      "one-dark-ui"
+      "one-dark-syntax"
+    ]
+  "exception-reporting":
+    userId: "507de1e0-6464-b91c-4da6-f441cf4a90fe"
+  welcome:
+    showOnStartup: false
