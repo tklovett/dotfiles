@@ -25,11 +25,7 @@ export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin"
 source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
+export EDITOR='vim'
 
 # Functions
 docker_build_and_tag() {
