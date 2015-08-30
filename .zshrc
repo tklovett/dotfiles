@@ -4,7 +4,7 @@
 export ZSH=/Users/tlovett/.oh-my-zsh
 
 # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="lukerandall"
+ZSH_THEME="tlovett"
 
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
@@ -39,13 +39,6 @@ stop_containers() {
 		docker stop $RUNNING_CONTAINERS
 	fi
 }
-gfcify() {
-	DATA=~/db/postgres
-	mkdir -p ${DATA}
-	set -x
-	docker run -d --name postgres -v ${DATA}:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=password postgres:9.4.1
-	docker logs -f postgres
-}
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs, plugins, and themes.
 # For a full list of active aliases, run `alias`.
@@ -54,49 +47,16 @@ alias unpip='pip freeze | xargs pip uninstall -y'
 alias rmimages='docker rmi $(docker images -q)'
 alias rmcontainers='docker rm $(docker ps -a -q)'
 alias dbt=docker_build_and_tag
-alias shellinit='$(boot2docker shellinit)'
+alias shellinit='eval "$(docker-machine env default)"'
 alias dlogin='docker login containers.rmn.io'
 alias wut='echo $?'
 alias pggiftcards='pgcli postgresql://postgres:password@docker:5432/giftcards'
-alias b2d='boot2docker'
-
-alias west-prod='ssh_through_perimeter eops-west.wsmeco.com'
-alias west2-stage='ssh_through_perimeter eops-west2-stage.wsmeco.com'
-alias west-stage='ssh_through_perimeter eops-west-stage.wsmeco.com'
-alias west-test='ssh_through_perimeter eops-west-test.wsmeco.com'
-alias west-int='ssh_through_perimeter eops-west-int.wsmeco.com'
 
 # Git Aliases
 alias gs='git status -sb'
 compdef _git gs=git-status
 alias gl='git log --oneline --graph --decorate --date=relative --all'
 alias rmremote='git push origin --delete'
+alias uncommit='git reset --soft HEAD~1'
 
-source ~/.env-vars.sh
-
-# Functions
-function dev() {
-  open /Applications/iTerm.app/
-  open /Applications/Google\ Chrome.app/
-  open /Applications/IntelliJ\ IDEA\ 14.app
-  open /Applications/HipChat.app
-}
-ssh_through_perimeter() {
-    perimeter=$1
-    if [ -n "$2" ]; then
-        hosts=$(ssh "$perimeter" perl -ne "'@a=split(); print \$a[1].\"\n\" if m/$2/'" /etc/hosts | sort )
-        if [ -z "$hosts" ]; then
-            echo "No hosts matching $2 found"
-        elif [ $(echo "$hosts" | wc -l) -gt 1 ]; then
-            last=$(echo "$hosts" | tail -n 1)
-            echo "Multiple hosts found:"
-            echo "$hosts"
-            echo "Using $last"
-            ssh "$last"
-        else
-            ssh "$hosts"
-        fi
-    else
-        ssh "$perimeter"
-    fi
-}
+source ~/.env-specific.sh
