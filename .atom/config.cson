@@ -3,6 +3,7 @@
     invisibles: {}
     softTabs: false
     showInvisibles: true
+    fontSize: 12
   core:
     themes: [
       "one-dark-ui"
