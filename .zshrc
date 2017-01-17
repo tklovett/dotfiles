@@ -66,6 +66,8 @@ branch() {
 	git checkout -b tl-$1-$2
 }
 
-source ~/.env-specific.sh
+if [ -f "~/.env-specific.sh" ]; then
+	source ~/.env-specific.sh
+fi
 
 PATH="/Users/tlovett/perl5/bin${PATH:+:${PATH}}"; export PATH;
