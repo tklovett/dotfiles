@@ -4,56 +4,57 @@
 export ZSH=/Users/tlovett/.oh-my-zsh
 
 # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
-ZSH_THEME="tlovett"
+ZSH_THEME="agnoster"
 
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="false"
 
 # Uncomment the following line if you want to change the command execution time stamp shown in the history command output.
-HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(docker git virtualenv virtualenvwrapper colored-man-pages colorize extract adb gradle)
+plugins=(docker git colored-man-pages)
 
-# User configuration
-
-export PATH="$PATH:./bin:/usr/local/bin:/usr/local/sbin:/Users/tlovett/.dotfiles/bin:/Users/tlovett/.rbenv/shims:/usr/local/heroku/bin:/usr/local/opt/php53/bin:/usr/local/mysql/bin:/code/android-sdk-macosx/sdk/tools:/usr/local/sbin:/usr/local/bin:/Users/tlovett/code/go/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/tlovett/.rvm/bin"
+export PATH="$PATH:./bin"
+export PATH="$PATH:/bin"
+export PATH="$PATH:/sbin"
+export PATH="$PATH:/usr/bin"
+export PATH="$PATH:/usr/sbin"
+export PATH="$PATH:/usr/local/bin"
+export PATH="$PATH:/usr/local/sbin"
+export PATH="$PATH:/Users/tlovett/.rvm/bin"
+export PATH="$PATH:/Users/tlovett/.rbenv/shims"
+export PATH="$PATH:/opt/X11/bin"
+export PATH="$PATH:/usr/local/mysql/bin"
 export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin"
 
+# virtualenvwrapper - http://virtualenvwrapper.readthedocs.io/en/latest/install.html#shell-startup-file
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/code
+source /usr/local/bin/virtualenvwrapper.sh
+
+# User configuration
+# export PIP_REQUIRE_VIRTUALENV=true
 source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
 export EDITOR='vim'
 
 # Functions
-docker_build_and_tag() {
-	docker build -t $1 .
-}
-stop_containers() {
-	RUNNING_CONTAINERS=$(docker ps -q | xargs docker inspect -f '{{ .Id }} {{ .Name }}' | grep -v '%patternToSkip%' | awk '{ print $1 }')
-	if [ -n "$RUNNING_CONTAINERS" ]
-	then
-		echo Stopping running containers: $RUNNING_CONTAINERS
-		docker stop $RUNNING_CONTAINERS
-	fi
-}
+source $HOME/.docker_functions
+source $HOME/.kubernetes_functions
+source $HOME/.aws_profile_functions
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs, plugins, and themes.
 # For a full list of active aliases, run `alias`.
 alias reload=". ~/.zshrc && echo 'ZSH config reloaded from ~/.zshrc'"
 alias please='sudo $(fc -ln -1)'
 alias unpip='pip freeze | xargs pip uninstall -y'
-alias rmimages='docker rmi $(docker images -q)'
-alias rmcontainers='docker rm $(docker ps -a -q)'
-alias dbt=docker_build_and_tag
-alias dlogin='docker login containers.rmn.io'
 alias wut='echo $?'
-alias pggiftcards='pgcli postgresql://postgres:password@docker:5432/giftcards'
-alias catplain='/bin/cat'
-alias cat='colorize'
 alias up='cd ..'
+alias json_pretty='python -m json.tool'
 
 # Git Aliases
 alias gs='git status -sb'
@@ -62,12 +63,10 @@ alias gl='git log --oneline --graph --decorate --date=relative'
 alias gla='gl --all'
 alias rmremote='git push origin --delete'
 alias uncommit='git reset --soft HEAD~1'
-branch() {
-	git checkout -b tl-$1-$2
-}
 
-if [ -f "~/.env-specific.sh" ]; then
+if [ -f ~/.env-specific.sh ]; then
 	source ~/.env-specific.sh
 fi
 
-PATH="/Users/tlovett/perl5/bin${PATH:+:${PATH}}"; export PATH;
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/vault vault

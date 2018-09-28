@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Shell wrappers for docker run commands
+
+alias rmimages='docker rmi $(docker images -q)'
+alias rmcontainers='docker rm $(docker ps -a -q)'
+alias dbt=docker_build_and_tag
+
+docker_build_and_tag() {
+	docker build -t $1 .
+}
+stop_containers() {
+	RUNNING_CONTAINERS=$(docker ps -q | xargs docker inspect -f '{{ .Id }} {{ .Name }}' | grep -v '%patternToSkip%' | awk '{ print $1 }')
+	if [ -n "$RUNNING_CONTAINERS" ]
+	then
+		echo Stopping running containers: $RUNNING_CONTAINERS
+		docker stop $RUNNING_CONTAINERS
+	fi
+}
