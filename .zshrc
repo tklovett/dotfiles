@@ -1,7 +1,7 @@
 # https://github.com/robbyrussell/oh-my-zsh/blob/master/templates/zshrc.zsh-template
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/tlovett/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load. Look in ~/.oh-my-zsh/themes/
 ZSH_THEME="agnoster"
