@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+resource="$1"
+name="$2"
+set -x
+timestamp=$(date +%s)
+
+kubectl patch "${resource}" "${name}" \
+    --patch '{"spec":{"template":{"metadata":{"labels": {"last-restart":"'$timestamp'"}}}}}'
+
+set +x
