@@ -8,6 +8,9 @@
 	ui = true
 [push]
 	default = tracking
+[pull]
+        rebase = true
+        ff = only
 [branch]
 	autosetuprebase = always
 [credential]
