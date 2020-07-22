@@ -1,6 +1,0 @@
-#!/bin/bash
-
-alias kns="kubens"
-alias ktx="kubectx"
-alias kp="kube-prompt"
-alias kstatus="kubectl config get-contexts"
